@@ -23,6 +23,10 @@ if __name__ == '__main__':
     cutoff = params['cutoff']
     out_file = params['out_file']
     dir = os.path.split(out_file)
+    if os.path.exists(dir):
+        os.remove(dir)
+    else:
+        os.mkdir(dir)
     gene_abundance = pd.DataFrame.from_csv(gene_profile,sep="\t")
     gene_abundance[gene_abundance>=cutoff] = 1
     gene_abundance[gene_abundance<cutoff] = 0

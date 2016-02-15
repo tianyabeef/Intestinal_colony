@@ -22,7 +22,7 @@ if __name__ == '__main__':
     gene_profile = params['gene_profile']
     cutoff = params['cutoff']
     out_file = params['out_file']
-    dir = os.path.split(out_file)
+    dir,filename = os.path.split(out_file)
     if os.path.exists(dir):
         os.remove(dir)
     else:

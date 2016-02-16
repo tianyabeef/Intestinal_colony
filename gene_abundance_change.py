@@ -45,6 +45,7 @@ if __name__ == '__main__':
     gene_abundance[gene_abundance<cutoff] = 0
     gene_abundance.to_csv(out_file,encoding="utf-8",sep="\t")
     sum_abundance = gene_abundance.values.sum(axis=0)
+    print sum_abundance
 
     fq = os.popen("head -n 1 /data_center_03/USER/zhongwd/temp/0205/gene.profile")
     head=fq.read()

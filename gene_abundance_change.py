@@ -48,6 +48,6 @@ if __name__ == '__main__':
 
     fq = os.popen("head -n 1 /data_center_03/USER/zhongwd/temp/0205/gene.profile")
     head=fq.read()
-    with open("%s/sum.txt" % dir,mode="w",encoding="utf-8") as fqout:
+    with open("%s/sum.txt" % dir,mode="w") as fqout:
         fqout.write(head)
-        fqout.write(sum_abundance)
+        fqout.write("\t".join(sum_abundance))

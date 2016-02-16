@@ -28,14 +28,26 @@ if __name__ == '__main__':
         shutil.rmtree(dir)
     else:
         os.mkdir(dir)
-    gene_abundance = pd.DataFrame.from_csv(gene_profile,sep="\t")
+    reader = pd.read_csv(gene_profile, iterator=True, header=0,index_col=0,sep="\t")
+    loop = True
+    chunkSize = 500000
+    chunks = []
+    while loop:
+      try:
+        chunk = reader.get_chunk(chunkSize)
+        chunks.append(chunk)
+      except StopIteration:
+        loop = False
+        print "Iteration is stopped."
+    gene_abundance = pd.concat(chunks)
+    #gene_abundance = pd.DataFrame.from_csv(gene_profile,sep="\t")
     gene_abundance[gene_abundance>=cutoff] = 1
     gene_abundance[gene_abundance<cutoff] = 0
     gene_abundance.to_csv(out_file,encoding="utf-8",sep="\t")
     sum_abundance = gene_abundance.values.sum(axis=0)
 
-    with open(gene_profile,mode="r") as fq :
-        head = fq.next()
+    fq = os.popen("head -n 1 /data_center_03/USER/zhongwd/temp/0205/gene.profile")
+    head=fq.read()
     with open("%s/sum.txt" % dir,mode="w") as fqout:
         fqout.write(head)
         fqout.write(sum_abundance)

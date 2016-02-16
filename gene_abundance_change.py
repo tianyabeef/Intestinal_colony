@@ -31,7 +31,7 @@ if __name__ == '__main__':
     gene_abundance[gene_abundance>=cutoff] = 1
     gene_abundance[gene_abundance<cutoff] = 0
     gene_abundance.to_csv(out_file,encoding="utf-8",sep="\t")
-    sum_abundance = gene_abundance.values.sum
+    sum_abundance = gene_abundance.values.sum(axis=0)
 
     with open(gene_profile,mode="r") as fq :
         head = fq.next()

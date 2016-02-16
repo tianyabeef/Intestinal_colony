@@ -23,10 +23,8 @@ if __name__ == '__main__':
     df = pd.DataFrame.from_csv(gene_profile,sep="\t")
     #row sum
     sum_value = df.values.sum(axis=0)
-    head = os.popen('head -n 1 %s' % gene_profile)
-    with open(out_file,mode="w") as outfq:
-        outfq.write(head)
-        outfq.write(pd.DataFrame(sum_value).T)
-    print sum_value
+    out = pd.DataFrame(sum_value,index=df.columns).T
+    out.to_csv(out_file,encoding="utf-8",sep="\t")
+
     end = datetime.datetime.now()
     print (start-end).seconds

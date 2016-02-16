@@ -44,10 +44,7 @@ if __name__ == '__main__':
     gene_abundance[gene_abundance<cutoff] = 0
     gene_abundance.to_csv(out_file,encoding="utf-8",sep="\t")
     sum_abundance = gene_abundance.values.sum(axis=0)
-    print sum_abundance
+    out = pd.DataFrame(sum_abundance,index=gene_abundance.columns).T
+    out.to_csv("%s/sum.txt" % dir,encoding="utf-8",sep="\t")
 
-    fq = os.popen("head -n 1 /data_center_03/USER/zhongwd/temp/0205/gene.profile")
-    head=fq.read()
-    with open("%s/sum.txt" % dir,mode="w") as fqout:
-        fqout.write(head)
-        fqout.write(pd.DataFrame(sum_abundance).T)
+

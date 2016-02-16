@@ -6,6 +6,7 @@ import sys
 from pandas import Series, DataFrame
 import pandas as pd
 import os
+import shutil
 
 def read_params(args):
     parser = argparse.ArgumentParser(description='''cat gene_profile ;example LC-VS-AS ''')
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     out_file = params['out_file']
     dir,filename = os.path.split(out_file)
     if os.path.exists(dir):
-        os.remove(dir)
+        shutil.rmtree(dir)
     else:
         os.mkdir(dir)
     gene_abundance = pd.DataFrame.from_csv(gene_profile,sep="\t")

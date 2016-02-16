@@ -46,5 +46,3 @@ if __name__ == '__main__':
     sum_abundance = gene_abundance.values.sum(axis=0)
     out = pd.DataFrame(sum_abundance,index=gene_abundance.columns).T
     out.to_csv("%s/sum.txt" % dir,encoding="utf-8",sep="\t")
-
-

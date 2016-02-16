@@ -50,4 +50,4 @@ if __name__ == '__main__':
     head=fq.read()
     with open("%s/sum.txt" % dir,mode="w") as fqout:
         fqout.write(head)
-        fqout.write("\t".join(sum_abundance))
+        fqout.write(pd.DataFrame(sum_abundance).T)

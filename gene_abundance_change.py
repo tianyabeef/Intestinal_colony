@@ -26,8 +26,7 @@ if __name__ == '__main__':
     dir,filename = os.path.split(out_file)
     if os.path.exists(dir):
         shutil.rmtree(dir)
-    else:
-        os.mkdir(dir)
+    os.mkdir(dir)
     reader = pd.read_csv(gene_profile, iterator=True, header=0,index_col=0,sep="\t")
     loop = True
     chunkSize = 500000

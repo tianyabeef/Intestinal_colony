@@ -8,6 +8,7 @@ import pandas as pd
 import os
 import shutil
 import numpy as np
+import datetime
 
 def read_params(args):
     parser = argparse.ArgumentParser(description='''cat gene_profile ;example LC-VS-AS ''')
@@ -35,6 +36,7 @@ if __name__ == '__main__':
     print "start read file\n"
     while loop:
       try:
+        start = datetime.datetime.now()
         chunk = reader.get_chunk(chunkSize)
         chunk[chunk>=cutoff] = 1
         chunk[chunk<cutoff] = 0
@@ -43,6 +45,8 @@ if __name__ == '__main__':
         loop = False
         print "Iteration is stopped.\n"
     gene_abundance = pd.concat(chunks)
+    end = datetime.datetime.now()
+    print (start-end).seconds
     #gene_abundance = pd.DataFrame.from_csv(gene_profile,sep="\t")
     gene_abundance.to_csv(out_file,encoding="utf-8",sep="\t")
     print "start row sum\n"

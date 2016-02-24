@@ -25,9 +25,11 @@ if __name__ == '__main__':
     gene_file = params.gene_fa
     out_file = params.out_file
     out_file_fq = open(out_file,mode="w")
-    gene_names = pd.Series.from_csv(gene_name_file,sep="\t",header=None,index_col=None).to_dict()
+    gene_names = pd.Series.from_csv(gene_name_file,sep="\t",header=None,index_col=None).tolist()
+
     for record in SeqIO.parse(open(gene_file),'fasta'):
         name = record.name
         if name in gene_names:
+            print record
             out_file_fq.write(record.format('fasta'))
     out_file_fq.close()

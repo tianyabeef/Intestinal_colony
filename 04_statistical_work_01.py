@@ -8,6 +8,10 @@ import pandas as pd
 import sys
 from datetime import datetime
 
+def get_percent(data,sum):
+    data[sum*0.1>=data>0]
+
+
 if __name__ == '__main__':
     script,input_file,out_file,cut_off = sys.argv
     reader = pd.read_csv(input_file, iterator=True, header=0,index_col=0,sep="\t")
@@ -16,11 +20,14 @@ if __name__ == '__main__':
     chunks = []
     sum_list = []
     print "start read file\n"
+    groups = ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
     while loop:
       try:
         start = datetime.now()
         chunk = reader.get_chunk(chunkSize)
-        sum_tmp = chunk.sum(axis=0)
+        for group in groups:
+            temp = chunk[group]
+            sum_tmp = chunk.sum(axis=0)
         sum_list.append(sum_tmp)
       except StopIteration:
         loop = False

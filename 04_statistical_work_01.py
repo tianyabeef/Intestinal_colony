@@ -26,7 +26,7 @@ def get_percent(data,sum):
 
 if __name__ == '__main__':
 
-    script,input_file,out_file,cut_off = ["","D:\\Workspaces\\gene_profile\\test","D:\\Workspaces\\gene_profile\\testd",4]
+    script,input_file,out_file,cut_off = sys.argv
     reader = pd.read_csv(input_file, iterator=True, header=0,index_col=0,sep="\t")
     loop = True
     chunkSize = 10000

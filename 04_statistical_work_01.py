@@ -9,7 +9,19 @@ import sys
 from datetime import datetime
 
 def get_percent(data,sum):
-    data[sum*0.1>=data>0]
+    result = {}
+    result["0.1"]=data[(sum*0.1>=data) & (data>0)].sum()
+    result["0.2"]=data[(sum*0.2>=data) & (data>sum*0.1)].sum()
+    result["0.3"]=data[(sum*0.3>=data) & (data>sum*0.2)].sum()
+    result["0.4"]=data[(sum*0.4>=data) & (data>sum*0.3)].sum()
+    result["0.5"]=data[(sum*0.5>=data) & (data>sum*0.4)].sum()
+    result["0.6"]=data[(sum*0.6>=data) & (data>sum*0.5)].sum()
+    result["0.7"]=data[(sum*0.7>=data) & (data>sum*0.6)].sum()
+    result["0.8"]=data[(sum*0.8>=data) & (data>sum*0.7)].sum()
+    result["0.9"]=data[(sum*0.9>=data) & (data>sum*0.8)].sum()
+    result["1"]=data[(sum>=data) & (data>sum*0.9)].sum()
+    return pd.Series(result)
+
 
 
 if __name__ == '__main__':
@@ -19,18 +31,29 @@ if __name__ == '__main__':
     chunkSize = 10000
     chunks = []
     sum_list = []
+    out_result = {}
     print "start read file\n"
     groups = ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
     while loop:
       try:
         start = datetime.now()
         chunk = reader.get_chunk(chunkSize)
-        for group in groups:
-            temp = chunk[group]
-            sum_tmp = chunk.sum(axis=0)
+        sum_tmp = chunk.sum(axis=0)
         sum_list.append(sum_tmp)
+        for ind,group in enumerate(groups):
+            temp = chunk[group]
+            if out_result.has_key(group):
+                out_result[group].append(get_percent(temp,sum[ind]))
+            else:
+                out_result[group] = get_percent(temp,sum[ind])
       except StopIteration:
         loop = False
         print "Iteration is stopped.\n"
-    sum = pd.DataFrame(sum_list).sum(axis=0)
-    sum.to_csv(out_file,encoding="utf-8",sep="\t")
+    sum_totel = pd.DataFrame(sum_list).sum(axis=0)
+    sum_totel.to_csv("%s_sum.txt" % out_file,encoding="utf-8",sep="\t")
+    for key,value in out_result.items():
+        if value is not None:
+            sum = pd.DataFrame(value).sum(axis=0)
+            sum.to_csv("%s_%s.txt" % (out_file,key),encoding="utf-8",sep="\t")
+        else:
+            print "%s is None\n" % key

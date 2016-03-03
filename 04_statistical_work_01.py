@@ -35,17 +35,21 @@ if __name__ == '__main__':
     out_result = {}
     print "start read file\n"
     groups = ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+    max_value = 0
     while loop:
       try:
         start = datetime.now()
         chunk = reader.get_chunk(chunkSize)
+        max_temp = chunk.sum().sum()
+        if max_temp > max_value:
+            max_value = max_temp
         sum_tmp = chunk.sum(axis=0)
         sum_list.append(sum_tmp)
       except StopIteration:
         loop = False
         print "Iteration is stopped.\n"
     sum_totel = pd.DataFrame(sum_list).sum(axis=0)
-    sum_totel.to_csv("%ssum.txt" % out_file,encoding="utf-8",sep="\t")
+    sum_totel.to_csv("%s_sum.txt" % out_file,encoding="utf-8",sep="\t")
     reader = pd.read_csv(input_file, iterator=True, header=0,index_col=0,sep="\t")
     loop = True
     chunkSize = 10000
@@ -57,9 +61,10 @@ if __name__ == '__main__':
         for ind,group in enumerate(groups):
             temp = chunk[group]
             if out_result.has_key(group):
-                out_result[group].append(get_percent(temp,sum_totel[ind]))
+                out_result[group].append(get_percent(temp,max_value))
             else:
-                out_result[group] = get_percent(temp,sum_totel[ind])
+                out_result[group] = []
+                out_result[group].append(get_percent(temp,max_value))
       except StopIteration:
         loop = False
         print "Iteration is stopped.\n"

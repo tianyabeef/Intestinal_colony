@@ -40,7 +40,7 @@ if __name__ == '__main__':
       try:
         start = datetime.now()
         chunk = reader.get_chunk(chunkSize)
-        max_temp = chunk.sum().sum()
+        max_temp = chunk.max().max()
         if max_temp > max_value:
             max_value = max_temp
         sum_tmp = chunk.sum(axis=0)

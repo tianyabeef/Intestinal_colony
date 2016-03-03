@@ -40,17 +40,24 @@ if __name__ == '__main__':
         chunk = reader.get_chunk(chunkSize)
         sum_tmp = chunk.sum(axis=0)
         sum_list.append(sum_tmp)
-        for ind,group in enumerate(groups):
-            temp = chunk[group]
-            if out_result.has_key(group):
-                out_result[group].append(get_percent(temp,sum[ind]))
-            else:
-                out_result[group] = get_percent(temp,sum[ind])
       except StopIteration:
         loop = False
         print "Iteration is stopped.\n"
     sum_totel = pd.DataFrame(sum_list).sum(axis=0)
     sum_totel.to_csv("%s_sum.txt" % out_file,encoding="utf-8",sep="\t")
+    while loop:
+      try:
+        start = datetime.now()
+        chunk = reader.get_chunk(chunkSize)
+        for ind,group in enumerate(groups):
+            temp = chunk[group]
+            if out_result.has_key(group):
+                out_result[group].append(get_percent(temp,sum_totel[ind]))
+            else:
+                out_result[group] = get_percent(temp,sum_totel[ind])
+      except StopIteration:
+        loop = False
+        print "Iteration is stopped.\n"
     for key,value in out_result.items():
         if value is not None:
             sum = pd.DataFrame(value).sum(axis=0)

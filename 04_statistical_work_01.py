@@ -10,22 +10,23 @@ from datetime import datetime
 
 def get_percent(data,sum):
     result = {}
-    result["0.1"]=data[(sum*0.1>=data) & (data>0)].sum()
-    result["0.2"]=data[(sum*0.2>=data) & (data>sum*0.1)].sum()
-    result["0.3"]=data[(sum*0.3>=data) & (data>sum*0.2)].sum()
-    result["0.4"]=data[(sum*0.4>=data) & (data>sum*0.3)].sum()
-    result["0.5"]=data[(sum*0.5>=data) & (data>sum*0.4)].sum()
-    result["0.6"]=data[(sum*0.6>=data) & (data>sum*0.5)].sum()
-    result["0.7"]=data[(sum*0.7>=data) & (data>sum*0.6)].sum()
-    result["0.8"]=data[(sum*0.8>=data) & (data>sum*0.7)].sum()
-    result["0.9"]=data[(sum*0.9>=data) & (data>sum*0.8)].sum()
-    result["1"]=data[(sum>=data) & (data>sum*0.9)].sum()
+    result["0.1"]=data[(data<=sum*0.1) & (data>0)].sum()
+    result["0.2"]=data[(data<=sum*0.2) & (data>sum*0.1)].sum()
+    result["0.3"]=data[(data<=sum*0.3) & (data>sum*0.2)].sum()
+    result["0.4"]=data[(data<=sum*0.4) & (data>sum*0.3)].sum()
+    result["0.5"]=data[(data<=sum*0.5) & (data>sum*0.4)].sum()
+    result["0.6"]=data[(data<=sum*0.6) & (data>sum*0.5)].sum()
+    result["0.7"]=data[(data<=sum*0.7) & (data>sum*0.6)].sum()
+    result["0.8"]=data[(data<=sum*0.8) & (data>sum*0.7)].sum()
+    result["0.9"]=data[(data<=sum*0.9) & (data>sum*0.8)].sum()
+    result["1"]=data[(data<=sum) & (data>sum*0.9)].sum()
     return pd.Series(result)
 
 
 
 if __name__ == '__main__':
-    script,input_file,out_file,cut_off = sys.argv
+
+    script,input_file,out_file,cut_off = ["","D:\\Workspaces\\gene_profile\\test","D:\\Workspaces\\gene_profile\\testd",4]
     reader = pd.read_csv(input_file, iterator=True, header=0,index_col=0,sep="\t")
     loop = True
     chunkSize = 10000

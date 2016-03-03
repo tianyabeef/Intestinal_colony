@@ -45,7 +45,7 @@ if __name__ == '__main__':
         loop = False
         print "Iteration is stopped.\n"
     sum_totel = pd.DataFrame(sum_list).sum(axis=0)
-    sum_totel.to_csv("%s_sum.txt" % out_file,encoding="utf-8",sep="\t")
+    sum_totel.to_csv("%ssum.txt" % out_file,encoding="utf-8",sep="\t")
     reader = pd.read_csv(input_file, iterator=True, header=0,index_col=0,sep="\t")
     loop = True
     chunkSize = 10000
